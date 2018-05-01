@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 
-import { push as navigate } from 'redux-first-routing';
-
 class RestaurantEdit extends Component {
     constructor(props) {
         super(props);
@@ -12,12 +10,12 @@ class RestaurantEdit extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        const restaurants = nextProps.restaurants; // [{id: 1}, {id: 2}]
-        const url = nextProps.url; // /restaurants/1
+        const restaurants = nextProps.restaurants;
+        const url = nextProps.url;
         const idx = url.lastIndexOf('/');
-        const rid = url.slice(idx + 1);
+        const rid = parseInt(url.slice(idx + 1), 10);
 
-        const restaurant = restaurants.find((r) => r.id === parseInt(rid));
+        const restaurant = restaurants.find((r) => r.id === rid);
         if(restaurant === undefined) return prevState;
 
         return {...prevState, name: restaurant.name};
