@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 
 import { push as navigate } from 'redux-first-routing';
 
-
 class RestaurantList extends Component {
 
     get restaurants() {
@@ -30,6 +29,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         navigate: (url) => dispatch(navigate(url))
     }
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(RestaurantList);

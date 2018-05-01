@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import './App.css';
 import RestaurantList from './RestaurantList';
 import {getRestaurants} from "../actions/mainActions";
+import RestaurantAdd from "./RestaurantAdd";
 
 class App extends Component {
 
@@ -12,7 +13,7 @@ class App extends Component {
     }
 
     get currentComponent() {
-        if(this.props.url === '/restaurants/new') return <div/>;
+        if(this.props.url === '/restaurants/new') return <RestaurantAdd/>;
         return <RestaurantList/>;
     }
 
