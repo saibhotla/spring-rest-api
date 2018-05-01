@@ -5,6 +5,7 @@ import './App.css';
 import RestaurantList from './RestaurantList';
 import {getRestaurants} from "../actions/mainActions";
 import RestaurantAdd from "./RestaurantAdd";
+import RestaurantEdit from './RestaurantEdit';
 
 class App extends Component {
 
@@ -14,6 +15,7 @@ class App extends Component {
 
     get currentComponent() {
         if(this.props.url === '/restaurants/new') return <RestaurantAdd/>;
+        if(/\/restaurants\/[0-9]*/.test(this.props.url)) return <RestaurantEdit/>;
         return <RestaurantList/>;
     }
 

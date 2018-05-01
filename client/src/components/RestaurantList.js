@@ -5,8 +5,12 @@ import { push as navigate } from 'redux-first-routing';
 
 class RestaurantList extends Component {
 
+    restaurantSelect(r) {
+        this.props.navigate(`/restaurants/${r.id}`);
+    }
+
     get restaurants() {
-        return this.props.restaurants.map(r => <li key={r.id}>{r.name}</li>);
+        return this.props.restaurants.map(r => <li onClick={() => this.restaurantSelect(r)} key={r.id}>{r.name}</li>);
     }
 
     render() {
