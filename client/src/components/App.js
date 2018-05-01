@@ -11,12 +11,23 @@ class App extends Component {
         this.props.getRestaurants();
     }
 
+    get currentComponent() {
+        if(this.props.url === '/restaurants/new') return <div/>;
+        return <RestaurantList/>;
+    }
+
     render() {
         return (
             <div className="App">
-                <RestaurantList/>
+                {this.currentComponent}
             </div>
         );
+    }
+}
+
+const mapStateToProps = (state) => {
+    return {
+        url: state.router.pathname
     }
 }
 
@@ -26,4 +37,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(undefined, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
