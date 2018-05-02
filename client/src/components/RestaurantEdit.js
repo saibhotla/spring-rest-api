@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 
 import { restaurantUpdate } from '../actions/mainActions';
+import { restaurantDelete } from '../actions/mainActions';
 
 class RestaurantEdit extends Component {
     constructor(props) {
@@ -39,6 +40,7 @@ class RestaurantEdit extends Component {
         return <div>
             <input type="text" name="name" value={this.state.restaurant.name} onChange={(e) => this.textChange(e)}/>
             <button onClick={() => this.save(this.state.restaurant)}>Save</button>
+            <button onClick={() => this.props.delete(this.state.restaurant)}>Delete</button>
         </div>
     }
 }
@@ -52,7 +54,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        save: (restaurant) => dispatch(restaurantUpdate(restaurant))
+        save: (restaurant) => dispatch(restaurantUpdate(restaurant)),
+        delete: (restaurant) => dispatch(restaurantDelete(restaurant))
     }
 };
 

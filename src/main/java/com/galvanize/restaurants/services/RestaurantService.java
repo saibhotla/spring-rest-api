@@ -25,12 +25,23 @@ public class RestaurantService {
     }
 
     public Restaurant restaurantUpdate(Restaurant restaurant) {
-        for(int i = 0; i < restaurants.size(); i++) {
+        for (int i = 0; i < restaurants.size(); i++) {
             Restaurant existing = restaurants.get(i);
-            if(existing.getId() != restaurant.getId()) continue;
+            if (existing.getId() != restaurant.getId()) continue;
             restaurants.set(i, restaurant);
             return restaurant;
         }
         throw new RuntimeException("Restaurant not found with id=" + restaurant.getId());
+    }
+
+    public Restaurant restaurantDelete(int id) {
+        for (int i = 0; i < restaurants.size(); i++) {
+            Restaurant existing = restaurants.get(i);
+            if (existing.getId() == id) {
+                restaurants.remove(i);
+                return existing;
+            }
+        }
+        throw new RuntimeException("Restaurant not found with id=" + id);
     }
 }

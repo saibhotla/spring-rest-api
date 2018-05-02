@@ -28,4 +28,9 @@ public class ResaurantController {
         if(id != restaurant.getId()) throw new RuntimeException("Restaurant id does not match route!");
         return restaurantService.restaurantUpdate(restaurant);
     }
+
+    @DeleteMapping("/api/restaurants/{id}")
+    public Restaurant restaurantDelete(@PathVariable int id) {
+        return restaurantService.restaurantDelete(id);
+    }
 }

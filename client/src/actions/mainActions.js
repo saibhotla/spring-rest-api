@@ -1,4 +1,4 @@
-import { push as navigate } from 'redux-first-routing';
+import {push as navigate} from 'redux-first-routing';
 
 export const getRestaurants = () => {
     return async (dispatch) => {
@@ -42,6 +42,21 @@ export const restaurantUpdate = (restaurant) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(restaurant)
+        });
+        await req.json();
+        dispatch(getRestaurants());
+        dispatch(navigate('/restaurants'));
+    }
+};
+
+export const restaurantDelete = (restaurant) => {
+    return async (dispatch) => {
+        const req = await fetch(`/api/restaurants/${restaurant.id}`, {
+            method: 'delete',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            }
         });
         await req.json();
         dispatch(getRestaurants());
