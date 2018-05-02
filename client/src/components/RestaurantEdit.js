@@ -1,11 +1,16 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 
+import { restaurantUpdate } from '../actions/mainActions';
+
 class RestaurantEdit extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: ''
+            restaurant: {
+                id: undefined,
+                name: ''
+            }
         }
     }
 
@@ -18,13 +23,22 @@ class RestaurantEdit extends Component {
         const restaurant = restaurants.find((r) => r.id === rid);
         if(restaurant === undefined) return prevState;
 
-        return {...prevState, name: restaurant.name};
+        return {...prevState, restaurant};
+    }
+
+    textChange(e) {
+        const restaurant = {...this.state.restaurant, [e.target.name]: e.target.value};
+        super.setState({...this.state, restaurant});
+    }
+
+    save(restaurant) {
+        this.props.save(restaurant);
     }
 
     render() {
         return <div>
-            <input type="text" name="restaurantName" value={this.state.name} onChange={(e) => this.textChange(e)}/>
-            <button onClick={() => this.save(this.state.name)}>Save</button>
+            <input type="text" name="name" value={this.state.restaurant.name} onChange={(e) => this.textChange(e)}/>
+            <button onClick={() => this.save(this.state.restaurant)}>Save</button>
         </div>
     }
 }
@@ -36,4 +50,10 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default connect(mapStateToProps)(RestaurantEdit);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        save: (restaurant) => dispatch(restaurantUpdate(restaurant))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RestaurantEdit);

@@ -16,10 +16,27 @@ export const gotRestaurants = (restaurants) => {
     };
 };
 
+// TODO: rename to restaurantCreate()
 export const saveRestaurant = (restaurant) => {
     return async (dispatch) => {
         const req = await fetch('/api/restaurants', {
             method: 'post',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(restaurant)
+        });
+        await req.json();
+        dispatch(getRestaurants());
+        dispatch(navigate('/restaurants'));
+    }
+};
+
+export const restaurantUpdate = (restaurant) => {
+    return async (dispatch) => {
+        const req = await fetch(`/api/restaurants/${restaurant.id}`, {
+            method: 'put',
             headers: {
                 'Accept': 'application/json, text/plain, */*',
                 'Content-Type': 'application/json'
