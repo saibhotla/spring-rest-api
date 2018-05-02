@@ -1,5 +1,7 @@
 import {push as navigate} from 'redux-first-routing';
 
+// TODO: Rename mainActions to restaurantActions
+
 export const getRestaurants = () => {
     return async (dispatch) => {
         const req = await fetch('/api/restaurants');
@@ -16,7 +18,7 @@ export const gotRestaurants = (restaurants) => {
     };
 };
 
-// TODO: rename to restaurantCreate()
+// TODO: rename to restaurantAdd()
 export const saveRestaurant = (restaurant) => {
     return async (dispatch) => {
         const req = await fetch('/api/restaurants', {

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController()
-public class ResaurantController {
+public class RestaurantController {
 
     @Autowired
     private RestaurantService restaurantService;

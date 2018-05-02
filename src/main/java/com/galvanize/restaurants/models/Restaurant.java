@@ -1,12 +1,13 @@
 package com.galvanize.restaurants.models;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Restaurant {
     private int id;
     private String name;
-    private List<Review> reviews;
+    private List<Review> reviews = new ArrayList<>();
 
     public Restaurant() {
     }

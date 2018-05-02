@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 
+import ReviewList from './ReviewList';
+
 import { restaurantUpdate } from '../actions/mainActions';
 import { restaurantDelete } from '../actions/mainActions';
 
@@ -16,14 +18,9 @@ class RestaurantEdit extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        const restaurants = nextProps.restaurants;
-        const url = nextProps.url;
-        const idx = url.lastIndexOf('/');
-        const rid = parseInt(url.slice(idx + 1), 10);
-
-        const restaurant = restaurants.find((r) => r.id === rid);
+        const restaurantId = parseInt(/\/restaurants\/([0-9]*)/.exec(nextProps.url)[1], 10);
+        const restaurant = nextProps.restaurants.find((r) => r.id === restaurantId);
         if(restaurant === undefined) return prevState;
-
         return {...prevState, restaurant};
     }
 
@@ -32,15 +29,12 @@ class RestaurantEdit extends Component {
         super.setState({...this.state, restaurant});
     }
 
-    save(restaurant) {
-        this.props.save(restaurant);
-    }
-
     render() {
         return <div>
             <input type="text" name="name" value={this.state.restaurant.name} onChange={(e) => this.textChange(e)}/>
-            <button onClick={() => this.save(this.state.restaurant)}>Save</button>
+            <button onClick={() => this.props.save(this.state.restaurant)}>Save</button>
             <button onClick={() => this.props.delete(this.state.restaurant)}>Delete</button>
+            <ReviewList />
         </div>
     }
 }

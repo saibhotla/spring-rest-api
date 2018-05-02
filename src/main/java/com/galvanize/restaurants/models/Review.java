@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Review {
     private int id;
+    private int restaurantId;
     private String text;
     private int stars;
 
@@ -54,5 +55,13 @@ public class Review {
     public int hashCode() {
 
         return Objects.hash(getId(), getText(), getStars());
+    }
+
+    public int getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(int restaurantId) {
+        this.restaurantId = restaurantId;
     }
 }
