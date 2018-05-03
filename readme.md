@@ -1,4 +1,4 @@
-# Restaurant Review Spring API
+# RESTful Restaurants
 
 This repo contains a working redux app which makes API calls for CRUD on restaurants and reviews.
 
