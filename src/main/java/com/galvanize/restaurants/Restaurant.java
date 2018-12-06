@@ -10,6 +10,10 @@ final class Restaurant {
         this.name = name;
     }
 
+    public Restaurant(){
+
+    }
+
     public int getId() {
         return id;
     }
