@@ -1,5 +1,7 @@
 package com.galvanize.restaurants;
 
+import java.util.Objects;
+
 final class Restaurant {
 
     private int id;
@@ -11,6 +13,11 @@ final class Restaurant {
     }
 
     public Restaurant(){
+
+    }
+
+    public Restaurant(String name){
+        this.name = name;
 
     }
 
@@ -29,5 +36,18 @@ final class Restaurant {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Restaurant)) return false;
+        Restaurant that = (Restaurant) o;
+        return Objects.equals(getName(), that.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName());
     }
 }
