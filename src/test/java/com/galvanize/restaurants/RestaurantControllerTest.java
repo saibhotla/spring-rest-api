@@ -39,7 +39,7 @@ public class RestaurantControllerTest {
         repository.deleteAll();
     }
 
-    //@After
+    @After
     public void afterEach(){
         repository.deleteAll();
     }
@@ -77,31 +77,6 @@ public class RestaurantControllerTest {
 
         //Assert
         assertThat(actual, contains(expected));
-
-    }
-
-    @Test
-    public void listReturnsMultipleRestaurantsFromRepository()throws Exception{
-        //Setup
-        final Restaurant ribs = new Restaurant("Fred's Ribs");
-        final Restaurant mcDonalds = new Restaurant("McDonalds");
-
-        repository.save(ribs);
-        repository.save(mcDonalds);
-
-
-        //Exercise
-        final String content = mockMvc.perform(get("/api/restaurants"))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        final List<Restaurant> actual = OBJECT_MAPPER.readValue(content,new TypeReference<List<Restaurant>>(){});
-
-
-        //Assert
-        assertThat(actual, contains(ribs,mcDonalds));
 
     }
 
