@@ -1,6 +1,6 @@
-CREATE SEQUENCE public.hibernate_sequence;
+CREATE SEQUENCE public.restaurant_sequence;
 
-ALTER SEQUENCE public.hibernate_sequence
+ALTER SEQUENCE public.restaurant_sequence
 OWNER TO nss_admin;
 
 CREATE TABLE public.restaurant
