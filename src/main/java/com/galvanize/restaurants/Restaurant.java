@@ -15,7 +15,7 @@ public class Restaurant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "restaurant_generator")
-    @SequenceGenerator(name="restaurant_generator", sequenceName = "restaurant_sequence")
+    @SequenceGenerator(name="restaurant_generator", sequenceName = "restaurant_sequence", allocationSize=1)
     private Long id;
     private String name;
 

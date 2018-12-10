@@ -9,15 +9,20 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -79,4 +84,55 @@ public class RestaurantControllerTest {
 
     }
 
+    @Test
+    public void addRestaurantReturnsEmptyListForEmptyString() throws Exception{
+        //Setup
+        String newRestaurant = "";
+
+        //Exercise & Assert
+        // POST
+        // status is 400
+        // assert message is "Restaurant name cannot be empty!"
+
+        //Exercise
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post("/api/restaurants")
+                .accept(MediaType.APPLICATION_JSON).content(newRestaurant)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        final int actual = mockMvc.perform(requestBuilder)
+                .andExpect(status().is(400)).andReturn().getResponse().getStatus();
+
+        //Assert
+        assertTrue(400 == actual);
+
+    }
+
+    @Test
+    public void addRestaurantReturnsRestaurantListWhenAddingNewRestaurant() throws Exception{
+        //Setup
+        final Restaurant expected = new Restaurant("Pizza hut");
+
+        String newRestaurant = "{\"name\":\"Pizza hut\"}";
+
+
+        //Exercise
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post("/api/restaurants")
+                .accept(MediaType.APPLICATION_JSON).content(newRestaurant)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        final String content = mockMvc.perform(requestBuilder)
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+
+        final Restaurant actual = OBJECT_MAPPER.readValue(content,Restaurant.class);
+
+        //Assert
+        assertEquals(actual.getName(), expected.getName());
+
+    }
 }
