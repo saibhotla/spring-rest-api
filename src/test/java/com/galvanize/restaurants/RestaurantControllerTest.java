@@ -1,8 +1,9 @@
 package com.galvanize.restaurants;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -24,93 +26,83 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class RestaurantControllerTest {
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
-
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    RestaurantRepository restaurantRepository;
+    private RestaurantRepository repository;
 
-    @After
-    public void clearRepository(){
-        restaurantRepository.deleteAll();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    @Before
+    public void beforeEach(){
+        repository.deleteAll();
+    }
+
+    //@After
+    public void afterEach(){
+        repository.deleteAll();
     }
 
     @Test
-    public void listReturnsEmptyListOfRestaurantsWhenNullRestuarant() throws Exception {
+    public void getReturnsEmptyList() throws Exception{
         //Setup
-        Restaurant restaurant = new Restaurant(null);
-        restaurantRepository.save(restaurant);
+
         //Exercise
-        final String responseString = mockMvc
-                .perform(get("/api/restaurants"))
+        final String actual = mockMvc.perform(get("/api/restaurants"))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        List<Restaurant> actual = OBJECT_MAPPER.readValue(responseString,
-                new TypeReference<List<Restaurant>>(){});
+
         //Assert
-        assertThat(actual.isEmpty(), is(true));
+        assertThat(actual, is("[]"));
     }
 
     @Test
-    public void returnsEmptyListofRestaurants() throws Exception{
+    public void listReturnsOneRestaurantFromRepository()throws Exception{
+        //Setup
+        final Restaurant expected = new Restaurant("Fred's Ribs");
+        repository.save(expected);
+
+
         //Exercise
-        final String  responseContent = mockMvc.perform(get("/api/restaurants"))
+        final String content = mockMvc.perform(get("/api/restaurants"))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
+        final List<Restaurant> actual = OBJECT_MAPPER.readValue(content,new TypeReference<List<Restaurant>>(){});
+
         //Assert
-        assertThat(responseContent, is("[]"));
+        assertThat(actual, contains(expected));
 
     }
 
     @Test
-    public void returnsOneRestaurant() throws Exception{
+    public void listReturnsMultipleRestaurantsFromRepository()throws Exception{
+        //Setup
+        final Restaurant ribs = new Restaurant("Fred's Ribs");
+        final Restaurant mcDonalds = new Restaurant("McDonalds");
 
-        Restaurant newRestaurant = new Restaurant(0, "KFC");
+        repository.save(ribs);
+        repository.save(mcDonalds);
 
-        restaurantRepository.save(newRestaurant);
 
-        final String  responseContent = mockMvc.perform(get("/api/restaurants"))
+        //Exercise
+        final String content = mockMvc.perform(get("/api/restaurants"))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
-        List<Restaurant> actual = OBJECT_MAPPER.readValue(responseContent, new TypeReference<List<Restaurant>>(){});
+        final List<Restaurant> actual = OBJECT_MAPPER.readValue(content,new TypeReference<List<Restaurant>>(){});
+
 
         //Assert
-        assertThat(actual, contains(newRestaurant));
+        assertThat(actual, contains(ribs,mcDonalds));
 
     }
-
-    @Test
-    public void returnsMoreThenOneRestaurant() throws Exception{
-
-        Restaurant kfc = new Restaurant(0, "KFC");
-        Restaurant chipotle = new Restaurant(1,"chipotle");
-
-        restaurantRepository.save(kfc);
-        restaurantRepository.save(chipotle);
-
-        final String  responseContent = mockMvc.perform(get("/api/restaurants"))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        List<Restaurant> actual = OBJECT_MAPPER.readValue(responseContent, new TypeReference<List<Restaurant>>(){});
-
-        //Assert
-        assertThat(actual, contains(kfc,chipotle));
-
-    }
-
 
 }

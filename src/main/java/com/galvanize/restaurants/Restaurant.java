@@ -1,37 +1,33 @@
 package com.galvanize.restaurants;
 
+import javax.persistence.*;
 import java.util.Objects;
 
-final class Restaurant {
-
-    private int id;
-    private String name;
-
-    public Restaurant(int id, String name) {
-        this.id = id;
+@Entity
+public class Restaurant {
+    public Restaurant(final String name){
         this.name = name;
     }
 
     public Restaurant(){
-
+        this(null);
     }
 
-    public Restaurant(String name){
-        this.name = name;
+    @Id
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    private Long id;
+    private String name;
 
-    }
-
-    public int getId() {
+    public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
-    }
-
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setName(String name) {
@@ -43,11 +39,20 @@ final class Restaurant {
         if (this == o) return true;
         if (!(o instanceof Restaurant)) return false;
         Restaurant that = (Restaurant) o;
-        return Objects.equals(getName(), that.getName());
+        return Objects.equals(getId(), that.getId()) &&
+                Objects.equals(getName(), that.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName());
+        return Objects.hash(getId(), getName());
+    }
+
+    @Override
+    public String toString() {
+        return "Restaurant{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
