@@ -1,6 +1,7 @@
 package com.galvanize.restaurants;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -82,7 +83,7 @@ public class Restaurant {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    private List<Review> reviews;
+    private List<Review> reviews = new ArrayList<>();
 
 
 

@@ -44,10 +44,13 @@ public class ReviewControllerTest {
 
         //Setup
         final Restaurant expected = new Restaurant("Fred's Ribs");
+        Review review = new Review(1L,"Bad Review");
+        expected.getReviews().add(review);
+
         repository.save(expected);
 
         //Exercise
-        final String actual = mockMvc.perform(get("/api/restaurants/1"))
+        final String actual = mockMvc.perform(get("/api/restaurants/1/reviews"))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -57,21 +60,4 @@ public class ReviewControllerTest {
         assertThat(actual, is("[]"));
     }
 
-    @Test
-    public void returnOneReviewForExistingRestaurant() throws Exception{
-
-        //Setup
-        final Restaurant expected = new Restaurant("Fred's Ribs");
-        repository.save(expected);
-
-        //Exercise
-        final String actual = mockMvc.perform(get("/api/restaurants/1"))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        //Assert
-        assertThat(actual, is("[]"));
-    }
 }
