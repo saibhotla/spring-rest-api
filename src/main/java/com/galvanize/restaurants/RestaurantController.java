@@ -31,6 +31,4 @@ import javax.xml.ws.http.HTTPException;
 
         return repository.save(newRestaurant);
     }
-
-
 }
