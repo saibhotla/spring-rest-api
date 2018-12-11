@@ -6,11 +6,12 @@ OWNER TO nss_admin;
 CREATE TABLE public.review
 (
   id bigint NOT NULL,
-  name character varying(255) COLLATE pg_catalog."default",
-  restaurant_id bigint REFERENCES restaurant(id),
-  CONSTRAINT review_pkey PRIMARY KEY (id),
-  CONSTRAINT restaurant_fkey FOREIGN KEY (restaurant_id)
-
+  text character varying(255) COLLATE pg_catalog."default",
+  restaurant_id bigint,
+  CONSTRAINT restaurant_key FOREIGN KEY (restaurant_id)
+    REFERENCES public.restaurant (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
 )
   WITH (
   OIDS = FALSE
