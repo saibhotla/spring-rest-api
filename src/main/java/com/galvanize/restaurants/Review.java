@@ -1,21 +1,29 @@
 package com.galvanize.restaurants;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-final class Reviews {
+@Entity
+final class Review {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "restaurant_generator")
-    @SequenceGenerator(name="restaurant_generator", sequenceName = "restaurant_sequence", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "review_generator")
+    @SequenceGenerator(name="review_generator", sequenceName = "review_sequence", allocationSize=1)
     private Long id;
-    private String name;
+    private String text;
+
+    public Review(final Long id, String text) {
+        this.id = id;
+        this.text = text;
+    }
 
     @ManyToOne
-    
+    @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
     public Long getId() {
@@ -26,11 +34,11 @@ final class Reviews {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getText() {
+        return text;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setText(String text) {
+        this.text = text;
     }
 }

@@ -1,6 +1,9 @@
 package com.galvanize.restaurants;
 
 import javax.persistence.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -56,4 +59,31 @@ public class Restaurant {
                 ", name='" + name + '\'' +
                 '}';
     }
+
+    public List<Review> getReviews(){
+
+       /* return Arrays.asList(new HashMap<String,Object>(){
+            {
+                put("id", 1);
+                put("text", "Text");
+
+            }
+        },
+        new HashMap<String,Object>(){
+            {
+                put("id", 7);
+                put("text", "ELMO");
+
+            }
+        });*/
+       reviews.add(new Review(1L,"Text"));
+
+       return reviews;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    private List<Review> reviews;
+
+
+
 }
